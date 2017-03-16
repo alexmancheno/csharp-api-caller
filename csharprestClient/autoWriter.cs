@@ -12,45 +12,57 @@ namespace csharprestClient
     class autoWriter
     {
         private RestClient rClient { get; set; }
-        private string filePath { get; set; } 
+        private string filePath { get; set; }
         private string fileName { get; set; }
         private int interval { get; set; }
+        private CancellationTokenSource tokenSource;
+        private CancellationToken cancellationToken;
 
         public autoWriter(RestClient r, string fp, int i)
         {
             rClient = r;
             filePath = fp;
             interval = i;
+            tokenSource = new CancellationTokenSource();
+            cancellationToken = tokenSource.Token;
         }
 
-        public async void updateFilePeriodically()
+        public void updateFilePeriodically()
         {
-            while (true)
+            Task.Factory.StartNew(() =>
             {
-                await Task.Delay(interval * 1000);
-                HttpWebResponse response = (HttpWebResponse)rClient.makeRequest();
-                if (response.StatusCode == HttpStatusCode.OK)
+                while (true)
                 {
-                    using (Stream responseStream = response.GetResponseStream())
+                    Thread.Sleep(interval * 1000);
+                    HttpWebResponse response = (HttpWebResponse)rClient.makeRequest();
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        if (responseStream != null)
+                        using (Stream responseStream = response.GetResponseStream())
                         {
-                            using (StreamReader reader = new StreamReader(responseStream))
+                            if (responseStream != null)
                             {
-                                using (StreamWriter sw = File.AppendText(filePath))
+                                using (StreamReader reader = new StreamReader(responseStream))
                                 {
-                                    string lastLine = string.Empty;
-                                    while (!reader.EndOfStream)
+                                    using (StreamWriter sw = File.AppendText(filePath))
                                     {
-                                        lastLine = reader.ReadLine();
+                                        string lastLine = string.Empty;
+                                        while (!reader.EndOfStream)
+                                        {
+                                            lastLine = reader.ReadLine();
+                                        }
+                                        sw.WriteLine(lastLine);
                                     }
-                                    sw.WriteLine(lastLine);
                                 }
                             }
                         }
                     }
-                } 
-            }
+                }
+            }, cancellationToken);
+        }
+
+        public void stopUpdating()
+        {
+            tokenSource.Cancel();
         }
     }
 }

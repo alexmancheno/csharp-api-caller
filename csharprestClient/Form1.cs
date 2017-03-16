@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace csharprestClient
 {
@@ -22,8 +23,8 @@ namespace csharprestClient
             InitializeComponent();
         }
 
-        bool autoWrite = false;
-        List<autoWriter> list = new List<autoWriter>();
+        private bool autoWrite = false;
+        private Dictionary<string, autoWriter> threadDictionary = new Dictionary<string, autoWriter>();
 
         #region UI Event Handlers
 
@@ -85,9 +86,19 @@ namespace csharprestClient
                 string filePath = txtFilePath.Text + txtFileName.Text;
                 int interval = 0, i = 0;
                 Int32.TryParse(txtInterval.Text, out interval);
-                list.Add(new autoWriter(rClient, filePath, interval));
-                list[i].updateFilePeriodically();
-                i++;
+
+                threadDictionary.Add(txtFileName.Text, new autoWriter(rClient, filePath, interval));
+                threadDictionary[txtFileName.Text].updateFilePeriodically();
+
+                ListViewItem item = new ListViewItem(txtFileName.Text);
+                item.SubItems.Add(txtFilePath.Text);
+                item.SubItems.Add(txtInterval.Text);
+                item.SubItems.Add(txtDays.Text);
+                item.SubItems.Add(txtTicker.Text);
+                item.SubItems.Add(comboBoxOptions.Text);
+                item.SubItems.Add(DateTime.Now.ToString("h:mm:ss tt"));
+
+                listActiveFiles.Items.Add(item);
             }
         }
 
@@ -173,6 +184,22 @@ namespace csharprestClient
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (listActiveFiles.Items.Count > 0)
+            {
+                ListViewItem item = listActiveFiles.SelectedItems[0];
+                string fileName = item.SubItems[0].Text;
+                threadDictionary[fileName].stopUpdating();
+                listActiveFiles.Items.Remove(item);
+            }
         }
     }
 }
