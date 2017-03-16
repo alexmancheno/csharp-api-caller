@@ -82,18 +82,19 @@ namespace csharprestClient
 
                 rClient.endPoint = ep;
 
-                string filePath = txtFilePath.Text + txtFileName;
-                int interval = 0;
+                string filePath = txtFilePath.Text + txtFileName.Text;
+                int interval = 0, i = 0;
                 Int32.TryParse(txtInterval.Text, out interval);
-                autoWriter aw = new autoWriter(rClient, filePath, interval);
-                list.Add(aw);
+                list.Add(new autoWriter(rClient, filePath, interval));
+                list[i].updateFilePeriodically();
+                i++;
             }
         }
 
 
         #endregion
 
-        private void debugOutPut(string strDebugText)
+        public void debugOutPut(string strDebugText)
         {
             try
             {
