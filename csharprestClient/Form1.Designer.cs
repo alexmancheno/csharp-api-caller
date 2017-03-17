@@ -35,6 +35,15 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
             this.tabActiveFiles = new System.Windows.Forms.TabPage();
+            this.btnRemove = new System.Windows.Forms.Button();
+            this.listActiveFiles = new System.Windows.Forms.ListView();
+            this.colFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colInterval = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colDays = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colTicker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colApi = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colDateCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabCreatFile = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
             this.rbNo = new System.Windows.Forms.RadioButton();
@@ -56,15 +65,6 @@
             this.comboBoxOptions = new System.Windows.Forms.ComboBox();
             this.btnWriteToFile = new System.Windows.Forms.Button();
             this.tabCreateFile = new System.Windows.Forms.TabControl();
-            this.listActiveFiles = new System.Windows.Forms.ListView();
-            this.colFileName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colFilePath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.colInterval = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colDays = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colTicker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colApi = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colLastUpdate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabActiveFiles.SuspendLayout();
             this.tabCreatFile.SuspendLayout();
@@ -88,11 +88,75 @@
             this.tabActiveFiles.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabActiveFiles.Location = new System.Drawing.Point(8, 39);
             this.tabActiveFiles.Name = "tabActiveFiles";
-            this.tabActiveFiles.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabActiveFiles.Padding = new System.Windows.Forms.Padding(3);
             this.tabActiveFiles.Size = new System.Drawing.Size(1482, 851);
             this.tabActiveFiles.TabIndex = 1;
             this.tabActiveFiles.Text = "Active Files";
             this.tabActiveFiles.UseVisualStyleBackColor = true;
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnRemove.Location = new System.Drawing.Point(6, 622);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(350, 67);
+            this.btnRemove.TabIndex = 1;
+            this.btnRemove.Text = "Stop auto-writing ";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // listActiveFiles
+            // 
+            this.listActiveFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listActiveFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colFileName,
+            this.colFilePath,
+            this.colInterval,
+            this.colDays,
+            this.colTicker,
+            this.colApi,
+            this.colDateCreated});
+            this.listActiveFiles.FullRowSelect = true;
+            this.listActiveFiles.Location = new System.Drawing.Point(0, 0);
+            this.listActiveFiles.Name = "listActiveFiles";
+            this.listActiveFiles.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.listActiveFiles.Size = new System.Drawing.Size(1482, 616);
+            this.listActiveFiles.TabIndex = 0;
+            this.listActiveFiles.UseCompatibleStateImageBehavior = false;
+            this.listActiveFiles.View = System.Windows.Forms.View.Details;
+            this.listActiveFiles.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // colFileName
+            // 
+            this.colFileName.Text = "File Name";
+            this.colFileName.Width = 108;
+            // 
+            // colFilePath
+            // 
+            this.colFilePath.Text = "File Path";
+            this.colFilePath.Width = 288;
+            // 
+            // colInterval
+            // 
+            this.colInterval.Text = "Interval";
+            // 
+            // colDays
+            // 
+            this.colDays.Text = "Days";
+            // 
+            // colTicker
+            // 
+            this.colTicker.Text = "Ticker";
+            // 
+            // colApi
+            // 
+            this.colApi.Text = "Api";
+            // 
+            // colDateCreated
+            // 
+            this.colDateCreated.Text = "Date Created";
             // 
             // tabCreatFile
             // 
@@ -117,7 +181,7 @@
             this.tabCreatFile.Controls.Add(this.btnWriteToFile);
             this.tabCreatFile.Location = new System.Drawing.Point(8, 39);
             this.tabCreatFile.Name = "tabCreatFile";
-            this.tabCreatFile.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabCreatFile.Padding = new System.Windows.Forms.Padding(3);
             this.tabCreatFile.Size = new System.Drawing.Size(1482, 851);
             this.tabCreatFile.TabIndex = 0;
             this.tabCreatFile.Text = "Create File";
@@ -324,70 +388,6 @@
             this.tabCreateFile.Size = new System.Drawing.Size(1498, 898);
             this.tabCreateFile.TabIndex = 17;
             // 
-            // listActiveFiles
-            // 
-            this.listActiveFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listActiveFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colFileName,
-            this.colFilePath,
-            this.colInterval,
-            this.colDays,
-            this.colTicker,
-            this.colApi,
-            this.colLastUpdate});
-            this.listActiveFiles.FullRowSelect = true;
-            this.listActiveFiles.Location = new System.Drawing.Point(0, 0);
-            this.listActiveFiles.Name = "listActiveFiles";
-            this.listActiveFiles.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.listActiveFiles.Size = new System.Drawing.Size(1482, 616);
-            this.listActiveFiles.TabIndex = 0;
-            this.listActiveFiles.UseCompatibleStateImageBehavior = false;
-            this.listActiveFiles.View = System.Windows.Forms.View.Details;
-            this.listActiveFiles.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            // 
-            // colFileName
-            // 
-            this.colFileName.Text = "File Name";
-            this.colFileName.Width = 108;
-            // 
-            // colFilePath
-            // 
-            this.colFilePath.Text = "File Path";
-            this.colFilePath.Width = 288;
-            // 
-            // btnRemove
-            // 
-            this.btnRemove.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnRemove.Location = new System.Drawing.Point(6, 622);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(350, 67);
-            this.btnRemove.TabIndex = 1;
-            this.btnRemove.Text = "Stop auto-writing ";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
-            // 
-            // colInterval
-            // 
-            this.colInterval.Text = "Interval";
-            // 
-            // colDays
-            // 
-            this.colDays.Text = "Days";
-            // 
-            // colTicker
-            // 
-            this.colTicker.Text = "Ticker";
-            // 
-            // colApi
-            // 
-            this.colApi.Text = "Api";
-            // 
-            // colLastUpdate
-            // 
-            this.colLastUpdate.Text = "Last Update";
-            // 
             // GoogleApiCaller
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -395,7 +395,7 @@
             this.ClientSize = new System.Drawing.Size(1524, 912);
             this.Controls.Add(this.tabCreateFile);
             this.Name = "GoogleApiCaller";
-            this.Text = "C# REST Client";
+            this.Text = "Numeraxial Data Stream ";
             this.Load += new System.EventHandler(this.GoogleApiCaller_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tabActiveFiles.ResumeLayout(false);
@@ -442,7 +442,7 @@
         private System.Windows.Forms.ColumnHeader colDays;
         private System.Windows.Forms.ColumnHeader colTicker;
         private System.Windows.Forms.ColumnHeader colApi;
-        private System.Windows.Forms.ColumnHeader colLastUpdate;
+        private System.Windows.Forms.ColumnHeader colDateCreated;
     }
 }
 

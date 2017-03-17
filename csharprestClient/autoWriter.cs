@@ -31,7 +31,7 @@ namespace csharprestClient
         {
             Task.Factory.StartNew(() =>
             {
-                while (true)
+                while (!tokenSource.IsCancellationRequested)
                 {
                     Thread.Sleep(interval * 1000);
                     HttpWebResponse response = (HttpWebResponse)rClient.makeRequest();
@@ -57,6 +57,9 @@ namespace csharprestClient
                         }
                     }
                 }
+
+
+
             }, cancellationToken);
         }
 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace csharprestClient
 {
@@ -30,75 +31,93 @@ namespace csharprestClient
 
         private void cmdGO_Click(object sender, EventArgs e)
         {
-            //dictionary which holds the available API's
-            Dictionary<string, string> apiList = new Dictionary<string, string>();
-            apiList.Add("Google Finance", "https://www.google.com/finance/getprices?i=[PERIOD]&p=[DAYS]d&f=d,o,h,l,c,v&def=cpct&q=[TICKER]");
-            apiList.Add("Yahoo Finance", "http://chartapi.finance.yahoo.com/instrument/1.0/[TICKER]/chartdata;type=quote;range=1d/json");
+            Regex numsOnly = new Regex("^[0-9]*");
 
-            //to replace substrings with user input from the desktop gui
-            string selectedRequest = apiList[comboBoxOptions.Text];
-            selectedRequest = selectedRequest.Replace("[TICKER]", txtTicker.Text);
-            selectedRequest = selectedRequest.Replace("[DAYS]", txtDays.Text);
-            selectedRequest = selectedRequest.Replace("[PERIOD]", txtInterval.Text);
-
-            //create RestClient object and set the endpoint w/ user input
-            RestClient rClient = new RestClient();
-            rClient.endPoint = selectedRequest;
-
-            //make the request to the API and retrieve response
-            HttpWebResponse response = (HttpWebResponse)rClient.makeRequest();
-
-            //write to file after retrieving response from API
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (!threadDictionary.ContainsKey(txtFileName.Text))
             {
-                debugOutPut("Http request to " + selectedRequest + ": " + response.StatusCode.ToString());
-                using (Stream responseStream = response.GetResponseStream())
+                //dictionary which holds the available API's
+                Dictionary<string, string> apiDictionary = new Dictionary<string, string>();
+                apiDictionary.Add("Google Finance", "https://www.google.com/finance/getprices?i=[PERIOD]&p=[DAYS]d&f=d,o,h,l,c,v&def=cpct&q=[TICKER]");
+                apiDictionary.Add("Yahoo Finance", "http://chartapi.finance.yahoo.com/instrument/1.0/[TICKER]/chartdata;type=quote;range=1d/json");
+
+                //replace substrings with user input from the desktop gui
+                string selectedRequest = apiDictionary[comboBoxOptions.Text];
+                selectedRequest = selectedRequest.Replace("[TICKER]", txtTicker.Text);
+                if (apiDictionary[comboBoxOptions.Text].Contains("[DAYS]"))
+                    selectedRequest = selectedRequest.Replace("[DAYS]", txtDays.Text);
+
+                if (apiDictionary[comboBoxOptions.Text].Contains("[PERIOD]"))
+                    selectedRequest = selectedRequest.Replace("[PERIOD]", txtInterval.Text);
+
+
+                //create RestClient object and set the endpoint w/ user input
+                RestClient rClient = new RestClient();
+                rClient.endPoint = selectedRequest;
+
+                //make the request to the API and retrieve response
+                HttpWebResponse response = (HttpWebResponse)rClient.makeRequest();
+
+                //write to file after retrieving response from API
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    if (responseStream != null)
+                    debugOutPut("Http request to " + comboBoxOptions.Text + ": " + response.StatusCode.ToString());
+                    using (Stream responseStream = response.GetResponseStream())
                     {
-                        using (StreamReader reader = new StreamReader(responseStream))
+                        if (responseStream != null)
                         {
-                            using (StreamWriter sw = File.CreateText(txtFilePath.Text + txtFileName.Text))
+                            using (StreamReader reader = new StreamReader(responseStream))
                             {
-                                string currentLine = string.Empty;
-                                debugOutPut("File created succesfully at: " + txtFilePath.Text);
-                                while (currentLine != null)
+                                using (StreamWriter sw = File.CreateText(txtFilePath.Text + txtFileName.Text))
                                 {
-                                    currentLine = reader.ReadLine();
-                                    sw.WriteLine(currentLine);
+                                    string currentLine = string.Empty;
+                                    debugOutPut("File created succesfully at: " + txtFilePath.Text);
+                                    while (currentLine != null)
+                                    {
+                                        currentLine = reader.ReadLine();
+                                        sw.WriteLine(currentLine);
+                                    }
+                                    debugOutPut("Finished writing to " + txtFilePath.Text + txtFileName.Text);
                                 }
-                                debugOutPut("Finished writing to " + txtFilePath.Text + txtFileName.Text);
                             }
                         }
                     }
                 }
+
+                if (autoWrite)
+                {
+                    string ep = apiDictionary[comboBoxOptions.Text];
+                    ep = ep.Replace("[TICKER]", txtTicker.Text);
+
+                    if (apiDictionary[comboBoxOptions.Text].Contains("[DAYS]"))
+                        ep = ep.Replace("[DAYS]", "1");
+
+                    if (apiDictionary[comboBoxOptions.Text].Contains("[PERIOD]"))
+                        ep = ep.Replace("[PERIOD]", txtInterval.Text);
+
+                    rClient.endPoint = ep;
+
+                    string filePath = txtFilePath.Text + txtFileName.Text;
+                    int interval = 0, i = 0;
+                    Int32.TryParse(txtInterval.Text, out interval);
+
+                    threadDictionary.Add(txtFileName.Text, new autoWriter(rClient, filePath, interval));
+                    threadDictionary[txtFileName.Text].updateFilePeriodically();
+
+                    ListViewItem item = new ListViewItem(txtFileName.Text);
+                    item.SubItems.Add(txtFilePath.Text);
+                    item.SubItems.Add(txtInterval.Text);
+                    item.SubItems.Add(txtDays.Text);
+                    item.SubItems.Add(txtTicker.Text);
+                    item.SubItems.Add(comboBoxOptions.Text);
+                    item.SubItems.Add(DateTime.Now.ToString("h:mm:ss tt"));
+
+                    listActiveFiles.Items.Add(item);
+                }
             }
 
-            if (autoWrite)
+            else
             {
-                string ep = apiList[comboBoxOptions.Text];
-                ep = ep.Replace("[TICKER]", txtTicker.Text);
-                ep = ep.Replace("[DAYS]", "1");
-                ep = ep.Replace("[PERIOD]", txtInterval.Text);
 
-                rClient.endPoint = ep;
-
-                string filePath = txtFilePath.Text + txtFileName.Text;
-                int interval = 0, i = 0;
-                Int32.TryParse(txtInterval.Text, out interval);
-
-                threadDictionary.Add(txtFileName.Text, new autoWriter(rClient, filePath, interval));
-                threadDictionary[txtFileName.Text].updateFilePeriodically();
-
-                ListViewItem item = new ListViewItem(txtFileName.Text);
-                item.SubItems.Add(txtFilePath.Text);
-                item.SubItems.Add(txtInterval.Text);
-                item.SubItems.Add(txtDays.Text);
-                item.SubItems.Add(txtTicker.Text);
-                item.SubItems.Add(comboBoxOptions.Text);
-                item.SubItems.Add(DateTime.Now.ToString("h:mm:ss tt"));
-
-                listActiveFiles.Items.Add(item);
             }
         }
 
@@ -157,12 +176,17 @@ namespace csharprestClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.RootFolder = Environment.SpecialFolder.Desktop;
-            fbd.Description = "Select a folder where the *.txt file will be saved";
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                txtFilePath.Text = fbd.SelectedPath + "\\";
-
+            try
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                fbd.RootFolder = Environment.SpecialFolder.Desktop;
+                fbd.Description = "Select a folder where the *.txt file will be saved";
+                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    txtFilePath.Text = fbd.SelectedPath + "\\";
+            } catch (Exception ex)
+            {
+                debugOutPut("There was an error selecting the file: " + ex.ToString());
+            } 
 
         }
 
@@ -195,11 +219,22 @@ namespace csharprestClient
         {
             if (listActiveFiles.Items.Count > 0)
             {
-                ListViewItem item = listActiveFiles.SelectedItems[0];
-                string fileName = item.SubItems[0].Text;
-                threadDictionary[fileName].stopUpdating();
-                listActiveFiles.Items.Remove(item);
+                try
+                {
+                    ListViewItem item = listActiveFiles.SelectedItems[0];
+                    string fileName = item.SubItems[0].Text;
+                    debugOutPut(fileName);
+                    threadDictionary[fileName].stopUpdating();
+                    threadDictionary.Remove(fileName);
+                    listActiveFiles.Items.Remove(item);
+                } 
+                catch (Exception ex)
+                {
+                    debugOutPut("There was an error killing the process: " + ex.ToString());
+                }
             }
+
+            
         }
     }
 }
