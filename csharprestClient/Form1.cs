@@ -18,14 +18,18 @@ namespace csharprestClient
 
     public partial class GoogleApiCaller : Form
     {
+        private bool autoWrite = false;
+        private Dictionary<string, autoWriter> threadDictionary = new Dictionary<string, autoWriter>();
+        //dictionary which holds the available API's
+        private Dictionary<string, string> apiDictionary = new Dictionary<string, string>();
+        //apiDictionary.
 
         public GoogleApiCaller()
         {
             InitializeComponent();
+            apiDictionary.Add("Google Finance", "https://www.google.com/finance/getprices?i=[PERIOD]&p=[DAYS]d&f=d,o,h,l,c,v&def=cpct&q=[TICKER]");
+            apiDictionary.Add("Yahoo Finance", "http://chartapi.finance.yahoo.com/instrument/1.0/[TICKER]/chartdata;type=quote;range=1d/json");
         }
-
-        private bool autoWrite = false;
-        private Dictionary<string, autoWriter> threadDictionary = new Dictionary<string, autoWriter>();
 
         #region UI Event Handlers
 
@@ -33,12 +37,9 @@ namespace csharprestClient
         {
             Regex numsOnly = new Regex("^[0-9]*");
 
+
             if (!threadDictionary.ContainsKey(txtFileName.Text))
             {
-                //dictionary which holds the available API's
-                Dictionary<string, string> apiDictionary = new Dictionary<string, string>();
-                apiDictionary.Add("Google Finance", "https://www.google.com/finance/getprices?i=[PERIOD]&p=[DAYS]d&f=d,o,h,l,c,v&def=cpct&q=[TICKER]");
-                apiDictionary.Add("Yahoo Finance", "http://chartapi.finance.yahoo.com/instrument/1.0/[TICKER]/chartdata;type=quote;range=1d/json");
 
                 //replace substrings with user input from the desktop gui
                 string selectedRequest = apiDictionary[comboBoxOptions.Text];
@@ -235,6 +236,49 @@ namespace csharprestClient
             }
 
             
+        }
+
+        private void lblListFilePath_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                fbd.RootFolder = Environment.SpecialFolder.Desktop;
+                fbd.Description = "Select a folder where the *.txt file will be saved";
+                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    txtSaveLocation.Text = fbd.SelectedPath + "\\";
+            }
+            catch (Exception ex)
+            {
+                debugOutPut("There was an error selecting the save location: " + ex.ToString());
+            }
+        }
+
+        private void btnSelectListFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    txtListFile.Text = ofd.FileName.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                debugOutPut("There was an error selecting the list file: " + ex.ToString());
+            }
+        }
+
+        private void btnCreateRecords_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

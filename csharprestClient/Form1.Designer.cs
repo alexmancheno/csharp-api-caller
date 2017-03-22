@@ -44,7 +44,7 @@
             this.colTicker = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colApi = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colDateCreated = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabCreatFile = new System.Windows.Forms.TabPage();
+            this.tabCreateRecord = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
             this.rbNo = new System.Windows.Forms.RadioButton();
             this.rbYes = new System.Windows.Forms.RadioButton();
@@ -63,12 +63,23 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxOptions = new System.Windows.Forms.ComboBox();
-            this.btnWriteToFile = new System.Windows.Forms.Button();
+            this.btnCreateRecord = new System.Windows.Forms.Button();
             this.tabCreateFile = new System.Windows.Forms.TabControl();
+            this.tabCreateMultipleRecords = new System.Windows.Forms.TabPage();
+            this.lblListFile = new System.Windows.Forms.Label();
+            this.txtListFile = new System.Windows.Forms.TextBox();
+            this.txtSaveLocation = new System.Windows.Forms.TextBox();
+            this.lblSaveLocation = new System.Windows.Forms.Label();
+            this.btnSelectSaveLocation = new System.Windows.Forms.Button();
+            this.btnCreateRecords = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtRecordsInterval = new System.Windows.Forms.TextBox();
+            this.btnSelectListFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabActiveFiles.SuspendLayout();
-            this.tabCreatFile.SuspendLayout();
+            this.tabCreateRecord.SuspendLayout();
             this.tabCreateFile.SuspendLayout();
+            this.tabCreateMultipleRecords.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -158,34 +169,34 @@
             // 
             this.colDateCreated.Text = "Date Created";
             // 
-            // tabCreatFile
+            // tabCreateRecord
             // 
-            this.tabCreatFile.Controls.Add(this.label8);
-            this.tabCreatFile.Controls.Add(this.rbNo);
-            this.tabCreatFile.Controls.Add(this.rbYes);
-            this.tabCreatFile.Controls.Add(this.txtFileName);
-            this.tabCreatFile.Controls.Add(this.txtInterval);
-            this.tabCreatFile.Controls.Add(this.txtResponse);
-            this.tabCreatFile.Controls.Add(this.txtDays);
-            this.tabCreatFile.Controls.Add(this.txtFilePath);
-            this.tabCreatFile.Controls.Add(this.txtTicker);
-            this.tabCreatFile.Controls.Add(this.btnSelectFolder);
-            this.tabCreatFile.Controls.Add(this.label3);
-            this.tabCreatFile.Controls.Add(this.label4);
-            this.tabCreatFile.Controls.Add(this.label5);
-            this.tabCreatFile.Controls.Add(this.label7);
-            this.tabCreatFile.Controls.Add(this.label6);
-            this.tabCreatFile.Controls.Add(this.label1);
-            this.tabCreatFile.Controls.Add(this.label2);
-            this.tabCreatFile.Controls.Add(this.comboBoxOptions);
-            this.tabCreatFile.Controls.Add(this.btnWriteToFile);
-            this.tabCreatFile.Location = new System.Drawing.Point(8, 39);
-            this.tabCreatFile.Name = "tabCreatFile";
-            this.tabCreatFile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCreatFile.Size = new System.Drawing.Size(1482, 851);
-            this.tabCreatFile.TabIndex = 0;
-            this.tabCreatFile.Text = "Create File";
-            this.tabCreatFile.UseVisualStyleBackColor = true;
+            this.tabCreateRecord.Controls.Add(this.label8);
+            this.tabCreateRecord.Controls.Add(this.rbNo);
+            this.tabCreateRecord.Controls.Add(this.rbYes);
+            this.tabCreateRecord.Controls.Add(this.txtFileName);
+            this.tabCreateRecord.Controls.Add(this.txtInterval);
+            this.tabCreateRecord.Controls.Add(this.txtResponse);
+            this.tabCreateRecord.Controls.Add(this.txtDays);
+            this.tabCreateRecord.Controls.Add(this.txtFilePath);
+            this.tabCreateRecord.Controls.Add(this.txtTicker);
+            this.tabCreateRecord.Controls.Add(this.btnSelectFolder);
+            this.tabCreateRecord.Controls.Add(this.label3);
+            this.tabCreateRecord.Controls.Add(this.label4);
+            this.tabCreateRecord.Controls.Add(this.label5);
+            this.tabCreateRecord.Controls.Add(this.label7);
+            this.tabCreateRecord.Controls.Add(this.label6);
+            this.tabCreateRecord.Controls.Add(this.label1);
+            this.tabCreateRecord.Controls.Add(this.label2);
+            this.tabCreateRecord.Controls.Add(this.comboBoxOptions);
+            this.tabCreateRecord.Controls.Add(this.btnCreateRecord);
+            this.tabCreateRecord.Location = new System.Drawing.Point(8, 39);
+            this.tabCreateRecord.Name = "tabCreateRecord";
+            this.tabCreateRecord.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCreateRecord.Size = new System.Drawing.Size(1482, 851);
+            this.tabCreateRecord.TabIndex = 0;
+            this.tabCreateRecord.Text = "Create Record";
+            this.tabCreateRecord.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -365,28 +376,126 @@
             this.comboBoxOptions.Size = new System.Drawing.Size(402, 33);
             this.comboBoxOptions.TabIndex = 12;
             // 
-            // btnWriteToFile
+            // btnCreateRecord
             // 
-            this.btnWriteToFile.Location = new System.Drawing.Point(534, 264);
-            this.btnWriteToFile.Name = "btnWriteToFile";
-            this.btnWriteToFile.Size = new System.Drawing.Size(358, 62);
-            this.btnWriteToFile.TabIndex = 2;
-            this.btnWriteToFile.Text = "Write To File";
-            this.btnWriteToFile.UseVisualStyleBackColor = true;
-            this.btnWriteToFile.Click += new System.EventHandler(this.cmdGO_Click);
+            this.btnCreateRecord.Location = new System.Drawing.Point(534, 264);
+            this.btnCreateRecord.Name = "btnCreateRecord";
+            this.btnCreateRecord.Size = new System.Drawing.Size(358, 62);
+            this.btnCreateRecord.TabIndex = 2;
+            this.btnCreateRecord.Text = "Create Record";
+            this.btnCreateRecord.UseVisualStyleBackColor = true;
+            this.btnCreateRecord.Click += new System.EventHandler(this.cmdGO_Click);
             // 
             // tabCreateFile
             // 
             this.tabCreateFile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabCreateFile.Controls.Add(this.tabCreatFile);
+            this.tabCreateFile.Controls.Add(this.tabCreateRecord);
+            this.tabCreateFile.Controls.Add(this.tabCreateMultipleRecords);
             this.tabCreateFile.Controls.Add(this.tabActiveFiles);
-            this.tabCreateFile.Location = new System.Drawing.Point(16, 3);
+            this.tabCreateFile.Location = new System.Drawing.Point(14, 2);
             this.tabCreateFile.Name = "tabCreateFile";
             this.tabCreateFile.SelectedIndex = 0;
             this.tabCreateFile.Size = new System.Drawing.Size(1498, 898);
             this.tabCreateFile.TabIndex = 17;
+            // 
+            // tabCreateMultipleRecords
+            // 
+            this.tabCreateMultipleRecords.Controls.Add(this.btnSelectListFile);
+            this.tabCreateMultipleRecords.Controls.Add(this.txtRecordsInterval);
+            this.tabCreateMultipleRecords.Controls.Add(this.label9);
+            this.tabCreateMultipleRecords.Controls.Add(this.btnCreateRecords);
+            this.tabCreateMultipleRecords.Controls.Add(this.btnSelectSaveLocation);
+            this.tabCreateMultipleRecords.Controls.Add(this.lblSaveLocation);
+            this.tabCreateMultipleRecords.Controls.Add(this.txtSaveLocation);
+            this.tabCreateMultipleRecords.Controls.Add(this.txtListFile);
+            this.tabCreateMultipleRecords.Controls.Add(this.lblListFile);
+            this.tabCreateMultipleRecords.Location = new System.Drawing.Point(8, 39);
+            this.tabCreateMultipleRecords.Name = "tabCreateMultipleRecords";
+            this.tabCreateMultipleRecords.Size = new System.Drawing.Size(1482, 851);
+            this.tabCreateMultipleRecords.TabIndex = 2;
+            this.tabCreateMultipleRecords.Text = "Create Multiple Records";
+            this.tabCreateMultipleRecords.UseVisualStyleBackColor = true;
+            // 
+            // lblListFile
+            // 
+            this.lblListFile.AutoSize = true;
+            this.lblListFile.Location = new System.Drawing.Point(83, 115);
+            this.lblListFile.Name = "lblListFile";
+            this.lblListFile.Size = new System.Drawing.Size(93, 25);
+            this.lblListFile.TabIndex = 0;
+            this.lblListFile.Text = "List File:";
+            this.lblListFile.Click += new System.EventHandler(this.lblListFilePath_Click);
+            // 
+            // txtListFile
+            // 
+            this.txtListFile.Location = new System.Drawing.Point(182, 115);
+            this.txtListFile.Name = "txtListFile";
+            this.txtListFile.Size = new System.Drawing.Size(1205, 31);
+            this.txtListFile.TabIndex = 1;
+            // 
+            // txtSaveLocation
+            // 
+            this.txtSaveLocation.Location = new System.Drawing.Point(182, 167);
+            this.txtSaveLocation.Name = "txtSaveLocation";
+            this.txtSaveLocation.Size = new System.Drawing.Size(1205, 31);
+            this.txtSaveLocation.TabIndex = 2;
+            // 
+            // lblSaveLocation
+            // 
+            this.lblSaveLocation.AutoSize = true;
+            this.lblSaveLocation.Location = new System.Drawing.Point(21, 167);
+            this.lblSaveLocation.Name = "lblSaveLocation";
+            this.lblSaveLocation.Size = new System.Drawing.Size(155, 25);
+            this.lblSaveLocation.TabIndex = 3;
+            this.lblSaveLocation.Text = "Save Location:";
+            // 
+            // btnSelectSaveLocation
+            // 
+            this.btnSelectSaveLocation.Location = new System.Drawing.Point(574, 282);
+            this.btnSelectSaveLocation.Name = "btnSelectSaveLocation";
+            this.btnSelectSaveLocation.Size = new System.Drawing.Size(372, 51);
+            this.btnSelectSaveLocation.TabIndex = 4;
+            this.btnSelectSaveLocation.Text = "Select Save Location";
+            this.btnSelectSaveLocation.UseVisualStyleBackColor = true;
+            this.btnSelectSaveLocation.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // btnCreateRecords
+            // 
+            this.btnCreateRecords.Location = new System.Drawing.Point(986, 282);
+            this.btnCreateRecords.Name = "btnCreateRecords";
+            this.btnCreateRecords.Size = new System.Drawing.Size(351, 51);
+            this.btnCreateRecords.TabIndex = 5;
+            this.btnCreateRecords.Text = "Create Records";
+            this.btnCreateRecords.UseVisualStyleBackColor = true;
+            this.btnCreateRecords.Click += new System.EventHandler(this.btnCreateRecords_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(88, 218);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(88, 25);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "Interval:";
+            // 
+            // txtRecordsInterval
+            // 
+            this.txtRecordsInterval.Location = new System.Drawing.Point(182, 215);
+            this.txtRecordsInterval.Name = "txtRecordsInterval";
+            this.txtRecordsInterval.Size = new System.Drawing.Size(199, 31);
+            this.txtRecordsInterval.TabIndex = 7;
+            // 
+            // btnSelectListFile
+            // 
+            this.btnSelectListFile.Location = new System.Drawing.Point(182, 282);
+            this.btnSelectListFile.Name = "btnSelectListFile";
+            this.btnSelectListFile.Size = new System.Drawing.Size(360, 51);
+            this.btnSelectListFile.TabIndex = 8;
+            this.btnSelectListFile.Text = "Select List File";
+            this.btnSelectListFile.UseVisualStyleBackColor = true;
+            this.btnSelectListFile.Click += new System.EventHandler(this.btnSelectListFile_Click);
             // 
             // GoogleApiCaller
             // 
@@ -399,9 +508,11 @@
             this.Load += new System.EventHandler(this.GoogleApiCaller_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tabActiveFiles.ResumeLayout(false);
-            this.tabCreatFile.ResumeLayout(false);
-            this.tabCreatFile.PerformLayout();
+            this.tabCreateRecord.ResumeLayout(false);
+            this.tabCreateRecord.PerformLayout();
             this.tabCreateFile.ResumeLayout(false);
+            this.tabCreateMultipleRecords.ResumeLayout(false);
+            this.tabCreateMultipleRecords.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -413,7 +524,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog2;
         private System.Windows.Forms.TabPage tabActiveFiles;
-        private System.Windows.Forms.TabPage tabCreatFile;
+        private System.Windows.Forms.TabPage tabCreateRecord;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RadioButton rbNo;
         private System.Windows.Forms.RadioButton rbYes;
@@ -432,7 +543,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxOptions;
-        private System.Windows.Forms.Button btnWriteToFile;
+        private System.Windows.Forms.Button btnCreateRecord;
         private System.Windows.Forms.TabControl tabCreateFile;
         private System.Windows.Forms.ListView listActiveFiles;
         private System.Windows.Forms.ColumnHeader colFileName;
@@ -443,6 +554,16 @@
         private System.Windows.Forms.ColumnHeader colTicker;
         private System.Windows.Forms.ColumnHeader colApi;
         private System.Windows.Forms.ColumnHeader colDateCreated;
+        private System.Windows.Forms.TabPage tabCreateMultipleRecords;
+        private System.Windows.Forms.Label lblSaveLocation;
+        private System.Windows.Forms.TextBox txtSaveLocation;
+        private System.Windows.Forms.TextBox txtListFile;
+        private System.Windows.Forms.Label lblListFile;
+        private System.Windows.Forms.Button btnSelectSaveLocation;
+        private System.Windows.Forms.Button btnCreateRecords;
+        private System.Windows.Forms.TextBox txtRecordsInterval;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnSelectListFile;
     }
 }
 
